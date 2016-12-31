@@ -15,11 +15,9 @@ class Mails_Impl extends PM_Model {
 		$data['type'] = $args['cmmt'];
 		$data['to'] = array();
 		
+		
 		if(!empty($args['cmusers'])){
-			/* print_r($args['cmusers']);
-			foreach($args['cmusers'] as $u){ */
-			array_push($data['to'],$args['cmusers']);
-			/* }  */
+			$data['to'] = json_decode($args['cmusers']);
 		}
 		
 		$data['body'] = $args['mb'];
@@ -68,11 +66,9 @@ class Mails_Impl extends PM_Model {
 		$data['to'] = array();
 		
 		if(!empty($args['cmusers'])){
-			/* print_r($args['cmusers']);
-			foreach($args['cmusers'] as $u){ */
-			array_push($data['to'],$args['cmusers']);
-			/* }  */
+				$data['to'] = json_decode($args['cmusers']);
 		}
+		
 		$data['body'] = $args['mb'];
 		$data['subject'] = $args['ms'];
 		$data['sent_status'] = $args['ss'];

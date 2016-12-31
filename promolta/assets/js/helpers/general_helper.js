@@ -26,7 +26,7 @@ defApp.controller('defCtrl', function($scope, $http, $cookies) {
 	$scope.maillist = null;
 	$scope.mailliststart=0;
 	$scope.cmuseroptions = null;
-	$scope.cmusers = null;
+	$scope.cmusers = [];
 	$scope.cmmailtype = 1;
 	$scope.cmtid = null;
 	$scope.frmid = null;
@@ -40,9 +40,10 @@ defApp.controller('defCtrl', function($scope, $http, $cookies) {
 	$scope.senderror = false;
 	$scope.savingDraft == false;
 	$scope.mailDeleted = false;
+	$scope.replyToDefault = false;
 	
 	$scope.resetComposeMail = function(){
-		$scope.cmusers = null;
+		$scope.cmusers = [];
 		$scope.cmmailtype = 1;
 		$scope.mailSubject = '';
 		$scope.mailBody = '';
@@ -59,6 +60,7 @@ defApp.controller('defCtrl', function($scope, $http, $cookies) {
 		$scope.senderror = false;
 		$scope.savingDraft == false;
 		$scope.mailDeleted = false;
+		$scope.replyToDefault = false;
 	}
 	
 	$scope.logout = function(){
@@ -210,7 +212,7 @@ defApp.controller('defCtrl', function($scope, $http, $cookies) {
 	}
 	
 	$scope.saveDraft = function(cmusers, mailSubject, mailBody, mailAttachments,sendstatus){
-		$scope.cmusers = cmusers;
+		//$scope.cmusers = cmusers;
 		if(sendstatus == 'sent' && (!$scope.cmusers)){
 			$scope.senderror = true;
 			return;
@@ -225,6 +227,7 @@ defApp.controller('defCtrl', function($scope, $http, $cookies) {
 			return;
 		}
 		
+		$scope.cmusers = JSON.stringify(cmusers);
 		
 		$scope.mailSubject = mailSubject;
 		$scope.mailBody = mailBody;
@@ -292,11 +295,12 @@ defApp.controller('defCtrl', function($scope, $http, $cookies) {
 		$scope.compose();
 		$scope.mailSubject = "RE: "+mail.subject;
 		$scope.mailBody = mail.sender_name+ " wrote on "+mail.timestamp+" : " +mail.body;
-		$scope.cmusers = mail.sender_id;
+		$scope.cmusers = [mail.sender_id];
 		//$scope.mailAttachments.push(mail.attachments);
 		$scope.cmmailtype = 3;
 		$scope.cmtid = mail.thread_id,
 		$scope.rpmid = mail.ID;
+		$scope.replyToDefault = true;
 	}
 	
 	
@@ -395,7 +399,6 @@ defApp.controller('defCtrl', function($scope, $http, $cookies) {
 	$scope.$watch('selected', function(nowSelected){
 	    // reset to nothing, could use `splice` to preserve non-angular references
 	    $scope.selectedValues = [];
-
 	    if( ! nowSelected ){
 	        // sometimes selected is null or undefined
 	        return;
@@ -405,6 +408,8 @@ defApp.controller('defCtrl', function($scope, $http, $cookies) {
 	    angular.forEach(nowSelected, function(val){
 	        $scope.cmusers.push( val.id.toString() );
 	    });
+	    
+	    
 	});
 	
 });

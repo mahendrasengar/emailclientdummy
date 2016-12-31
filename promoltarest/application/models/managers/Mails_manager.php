@@ -267,6 +267,8 @@ class Mails_Manager extends PM_Model {
 		if(!empty($args['to'])){
 			$toArr = $args['to'];
 			//$date = date('Y-m-d H:i:s');
+			
+			//print_r($toArr);
 			foreach($toArr as $to){
 				$data['mail_id'] = $args['mail_id'];
 				$data['to'] = $to;
